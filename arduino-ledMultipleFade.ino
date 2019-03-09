@@ -14,8 +14,8 @@ struct CRGB * step_array[] ={step1,step2,step3,step4,step5};
 int fadeAmount = 5;  // Fade hoeveelheid
 int brightness = 0; 
 
-uint8_t step_size = 10; // leds per tree
-uint8_t steps_size = 5;  // aantal steps
+int step_size = 10; // leds per tree
+int steps_size = 5;  // aantal steps
 
 void setup()
 {
@@ -23,22 +23,22 @@ void setup()
   FastLED.addLeds<WS2812B, PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
   FastLED.setBrightness(50);
   FastLED.setMaxPowerInVoltsAndMilliamps(5,1500); 
-  set_max_power_indicator_LED(13);
+  set_max_power_indicator_LED(2);
 }
 
 void loop()
 { 
-  loopIndicator();
+  loopIndicator(); // ledje op pcb knipper
     brightness = brightness + fadeAmount;
-  for (int x=0; x<steps_size; x++){
-    for (int i=0;i<step_size;i++){
-      int y = x * 25;
-      y = 0 - y;
-      y = y + brightness; 
-      if(y > 0){
-      step_array[x][i] = CHSV(255,10,y);
+  for (int x=0; x<steps_size; x++){ // voor elke tree
+    for (int i=0;i<step_size;i++){ // voor elke 10 leds op een tree
+      int y = x * 25; // verdubbel treenummer * 25
+      y = 0 - y; // 0 - bovenstaand
+      y = y + brightness; // een minus getal + hudiige brightness
+      if(y > 50){ // alleen laten zien bij 50+ brightness, (anders rare kleurtjes op lage brightness ;s)
+      step_array[x][i] = CHSV(255,10,y); //x = tree i = led van die tree
+      FastLED.show(); // show
       }
-          FastLED.show();
     }
 
   }
