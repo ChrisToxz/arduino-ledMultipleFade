@@ -38,16 +38,16 @@ void setup()
 void loop()
 { 
   for(int x=0; x<steps_size;x++){ // for elke tree
-    if(bright[x] < 255){ // voordat ze fullgefaded zijn
-      if(x == 0){ // eerste tree
+    if(bright[x] < 255){ // Alleen als ze nog niet op 100% zijn
+      if(x == 0){ // Als het de eerste tree is (Geen check op waarde van vorige tree
          for (int i=0;i<step_size;i++){ // voor elke 10 leds op een tree
             step_array[x][i] = CHSV(255,0,bright[x]);
           }
          bright[x] = bright[x] + fadeAmount;
-      }else{
-        int lastStep = x - 1;
-        if(bright[lastStep] > 150 ){
-          for (int i=0;i<step_size;i++){ // voor elke 10 leds op een tree
+      }else{ // als het niet de eerste tree is
+        int lastStep = x - 1; // var voor vorige tree nummer
+        if(bright[lastStep] > 155 ){ // als vorige tree een waarde heeft hoger dan
+          for (int i=0;i<step_size;i++){ // start dan deze tree met faden
             step_array[x][i] = CHSV(255,0,bright[x]);
           }
           bright[x] = bright[x] + fadeAmount;
