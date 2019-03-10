@@ -11,7 +11,7 @@ CRGBSet step5(leds(40,49));
 struct CRGB * step_array[] ={step1,step2,step3,step4,step5};
 #define PIN D5 
 #define COLOR_ORDER GRB 
-int fadeAmount = 5;  // Fade hoeveelheid
+int fadeAmount = 1;  // Fade hoeveelheid
 int brightness = 0; 
 
 int bright[] ={0,0,0,0,0,0,0,0,0};
@@ -37,10 +37,7 @@ void setup()
 
 void loop()
 { 
-  loopIndicator();
   for(int x=0; x<steps_size;x++){ // for elke tree
-    int nextStep = x + 1;
-    int lastStep = x - 1;
     if(bright[x] < 255){ // voordat ze fullgefaded zijn
       if(x == 0){ // eerste tree
          for (int i=0;i<step_size;i++){ // voor elke 10 leds op een tree
@@ -48,7 +45,8 @@ void loop()
           }
          bright[x] = bright[x] + fadeAmount;
       }else{
-        if(bright[lastStep] > 75 ){
+        int lastStep = x - 1;
+        if(bright[lastStep] > 150 ){
           for (int i=0;i<step_size;i++){ // voor elke 10 leds op een tree
             step_array[x][i] = CHSV(255,0,bright[x]);
           }
@@ -106,10 +104,8 @@ void loop()
 
 
 void loopIndicator(){
-      Serial.print('# Loop: '); Serial.println(loopi);
-      loopi++;
       digitalWrite(2,HIGH);
-      delay(100);
+      delay(5);
       digitalWrite(2,LOW);
 }
 
