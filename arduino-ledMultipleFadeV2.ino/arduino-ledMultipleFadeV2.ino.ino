@@ -3,8 +3,9 @@
 
 // Settings
 #define THRESHOLD_FADE 50                        // Hoger = Volgende tree later starten. 0=alles direct
-#define FADE_SPEED 10                            // Lager = Sneller fade #delay in ms
+#define FADE_SPEED 20                            // Lager = Sneller fade #delay in ms
 #define FADE_AMOUNT 1                            // Hoger = Snelle fade #brightness + fade_amount
+// Als je het op 50,20,1 zet is het effect duidelijk te zien
 
 //Trap
 #define STEPS_SIZE 5                             // aantal steps
