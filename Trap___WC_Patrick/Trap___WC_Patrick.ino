@@ -83,7 +83,7 @@ void setup()
 void loop(){ 
 
   /* WC CODE */
-  // Need some touch up ;)
+  // TODO: Code optimaliseren
 
   // Fade up
   Serial.println(wc);
@@ -101,13 +101,16 @@ void loop(){
     }
   }
 
-  // Fade down after minute`
+  // Fade down after minute in WC
   if(delayy(wc_time, 60000) && wc == 1){
     fill_solid(wcleds, WC_LEDS, CRGB::Black);
     FastLED.show();
     wc = 0;
     bright_wc = 0;
   }
+
+
+  /* TRAP SECTION */
 
 checkPir();
 // Beneden sensor trigger
@@ -137,7 +140,7 @@ if(up == 1 && down == 0){
   }
   lastFade = millis();                                // Sla millis op van laatste fade voor de delay
 }
-       //FastLED.delay(1); // Andere functie om de fade te vertragen, 1 vetraagt al gigantisch
+       //FastLED.delay(1); // Andere functie om de fade te vertragen, 1 vetraagt al gigantisch. Nu delay via millis, zie regel 118
         FastLED.show();   // Show led 
         upFade = millis();
 }
@@ -170,35 +173,38 @@ if(up == 3){
       }
     }
   }
-       //FastLED.delay(1); // Andere functie om de fade te vertragen, 1 vetraagt al gigantisch
+       //FastLED.delay(1); // Andere functie om de fade te vertragen, 1 vetraagt al gigantisch, nu delay via millis
         FastLED.show();   // Show led 
 }
 
-if(down == 1 && up == 0){
- if(delayy(lastFade,FADE_SPEED)){                      // Delay without delaying function, zie onderaan de boolean functie (0,1)
-  for(int x=STEPS_SIZE; x-- > 0;){                     // for elke tree
-    if(bright[x] < 255){                              // Alleen verder indien bright van die tree lager is dan 255(=max brightness)
-      if(x == STEPS_SIZE){                                     // Indien het de eerste tree is (Kan geen check uitvoeren of de vorige led een waarde heeft, zie code hier onder)
-         for (int i=0;i<STEP_SIZE;i++){               // voor elke 10 leds op een tree
-            step_array[x][i] = CHSV(255,0,bright[x]); // zet HSV
-          }
-         bright[x] = bright[x] + FADE_AMOUNT;         // set bright voor volgende run op brightness + fade amount
-      }else{                                          // als het niet de eerste tree is (Dus kan de waarde van de vorige tree checken)
-        int lastStep = x + 1;                         // var voor vorige tree id
-        if(bright[lastStep] > THRESHOLD_FADE ){       // als vorige tree een waarde heeft hoger dan de THRESHOLD (Pas gaan starten als de vorige tree op bijv 50 brightness zit)
-            for (int i=0;i<STEP_SIZE;i++){            // Voor elke 10 leds op een tree
-              step_array[x][i] = CHSV(255,0,bright[x]);// set HSV
-            }
-            bright[x] = bright[x] + FADE_AMOUNT;      // set bright voor volgende run op brightness + fade amount
-        } 
-      } 
-    }
-  }
-  lastFade = millis();                                // Sla millis op van laatste fade voor de delay
-}
-       //FastLED.delay(1); // Andere functie om de fade te vertragen, 1 vetraagt al gigantisch
-        FastLED.show();   // Show led 
-}
+
+// TODO: Sensor vanaf boven
+
+//if(down == 1 && up == 0){
+// if(delayy(lastFade,FADE_SPEED)){                      // Delay without delaying function, zie onderaan de boolean functie (0,1)
+//  for(int x=STEPS_SIZE; x-- > 0;){                     // for elke tree
+//    if(bright[x] < 255){                              // Alleen verder indien bright van die tree lager is dan 255(=max brightness)
+//      if(x == STEPS_SIZE){                                     // Indien het de eerste tree is (Kan geen check uitvoeren of de vorige led een waarde heeft, zie code hier onder)
+//         for (int i=0;i<STEP_SIZE;i++){               // voor elke 10 leds op een tree
+//            step_array[x][i] = CHSV(255,0,bright[x]); // zet HSV
+//          }
+//         bright[x] = bright[x] + FADE_AMOUNT;         // set bright voor volgende run op brightness + fade amount
+//      }else{                                          // als het niet de eerste tree is (Dus kan de waarde van de vorige tree checken)
+//        int lastStep = x + 1;                         // var voor vorige tree id
+//        if(bright[lastStep] > THRESHOLD_FADE ){       // als vorige tree een waarde heeft hoger dan de THRESHOLD (Pas gaan starten als de vorige tree op bijv 50 brightness zit)
+//            for (int i=0;i<STEP_SIZE;i++){            // Voor elke 10 leds op een tree
+//              step_array[x][i] = CHSV(255,0,bright[x]);// set HSV
+//            }
+//            bright[x] = bright[x] + FADE_AMOUNT;      // set bright voor volgende run op brightness + fade amount
+//        } 
+//      } 
+//    }
+//  }
+//  lastFade = millis();                                // Sla millis op van laatste fade voor de delay
+//}
+//       //FastLED.delay(1); // Andere functie om de fade te vertragen, 1 vetraagt al gigantisch
+//        FastLED.show();   // Show led 
+//}
 }
 
 boolean delayy(unsigned long since, unsigned long time) {
