@@ -16,7 +16,7 @@
 /* FADE SETTING */
 
 // WC
-#define WC_FADE 2
+#define WC_FADE 1
 
 // Trap
 #define THRESHOLD_FADE 50                        // Hoger = Volgende tree later starten. 0=alles direct
@@ -146,7 +146,7 @@ if(up == 1 && down == 0){
 }
 //Serial.println(up);
 
-if(delayy(upFade,5000) && up == 2){
+if(delayy(upFade,10000) && up == 2){
   up = 3;
 }
 
