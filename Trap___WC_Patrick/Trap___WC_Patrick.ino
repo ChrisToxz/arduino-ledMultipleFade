@@ -101,7 +101,7 @@ void loop(){
     }
   }
 
-  // Fade down after minute
+  // Fade down after minute`
   if(delayy(wc_time, 60000) && wc == 1){
     fill_solid(wcleds, WC_LEDS, CRGB::Black);
     FastLED.show();
