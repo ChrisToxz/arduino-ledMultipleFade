@@ -84,36 +84,58 @@ void loop(){
 
   /* WC CODE */
   // TODO: Code optimaliseren
-
-  // Fade up
-  Serial.println(wc);
-  if(digitalRead(WCPIR_PIN) == HIGH && wc == 0){
-    wc = 1;
-    if(bright_wc == 0){
-      for (int i=bright_wc;i<255;i++){ //TODO: Fade sneller maken maar bij +2 komt helderheid op 256 en dat resulteert in 0% helderheid.
-      bright_wc = bright_wc + 1;
+Serial.println(bright_wc);
+Serial.println(wc);
+if(wc == 1){
+  if(bright_wc < 210){
+      bright_wc = bright_wc + 3;
       for (int x=0;x<WC_LEDS;x++){               // voor elke 10 leds op een tree
             wcleds[x] = CHSV(255,0,bright_wc); // zet HSV
           }
         FastLED.show();
-    }
+  }else{
     wc_time = millis();
-    }
+    wc = 2;
   }
+}
 
-  // Fade down after minute in WC
-  if(delayy(wc_time, 60000) && wc == 1){
+if(delayy(wc_time,10000) && wc == 3){
     fill_solid(wcleds, WC_LEDS, CRGB::Black);
     FastLED.show();
-    wc = 0;
     bright_wc = 0;
-  }
+    wc = 0;
+}
+
+//  // Fade up
+//  Serial.println(wc);
+//  if(digitalRead(WCPIR_PIN) == HIGH && wc == 0){
+//    wc = 1;
+//    if(bright_wc == 0){
+//      for (int i=bright_wc;i<255;i++){ //TODO: Fade sneller maken maar bij +2 komt helderheid op 256 en dat resulteert in 0% helderheid.
+//      bright_wc = bright_wc + 1;
+//      for (int x=0;x<WC_LEDS;x++){               // voor elke 10 leds op een tree
+//            wcleds[x] = CHSV(255,0,bright_wc); // zet HSV
+//          }
+//        FastLED.show();
+//    }
+//    wc_time = millis();
+//    }
+//  }
+//
+//  // Fade down after minute in WC
+//  if(delayy(wc_time, 60000) && wc == 1){
+//    fill_solid(wcleds, WC_LEDS, CRGB::Black);
+//    FastLED.show();
+//    wc = 0;
+//    bright_wc = 0;
+//  }
 
 
   /* TRAP SECTION */
 
 checkPir();
-// Beneden sensor trigger
+
+
 if(up == 1 && down == 0){
  if(delayy(lastFade,FADE_SPEED)){                      // Delay without delaying function, zie onderaan de boolean functie (0,1)
   for(int x=0; x<STEPS_SIZE;x++){                     // for elke tree
@@ -221,10 +243,17 @@ boolean checkPir(){
   if(digitalRead(BENEDEN_PIN) == HIGH && up == 0){
     up = 1;
   }
-  if(digitalRead(BOVEN_PIN) == HIGH && down == 0){
-    down = 1;
+//  if(digitalRead(BOVEN_PIN) == HIGH && down == 0){
+//    down = 1;
+//  }
+
+  if(digitalRead(WCPIR_PIN) == HIGH && wc == 0){ 
+    wc = 1;
   }
-  
+
+  if(digitalRead(WCPIR_PIN) == LOW && wc == 2){
+    wc = 3;
+  }
 }
 
 
