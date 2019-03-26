@@ -98,7 +98,7 @@ if(wc == 1){
   }
 }
 
-if(delayy(wc_time,90000) && wc == 3){
+if(delayy(wc_time,90000) && wc == 2){
     fill_solid(wcleds, WC_LEDS, CRGB::Black);
     FastLED.show();
     bright_wc = 0;
@@ -221,12 +221,8 @@ boolean checkPir(){
   if(digitalRead(WCPIR_PIN) == HIGH && wc == 0){ 
     wc = 1;
   }
-
-  if(digitalRead(WCPIR_PIN) == LOW && wc == 2){
-    wc = 3;
-  }
+//
+//  if(digitalRead(WCPIR_PIN) == LOW && wc == 2){
+//    wc = 3;
+//  }
 }
-
-
-
-
