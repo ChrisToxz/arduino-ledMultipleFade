@@ -56,7 +56,7 @@ int bright_wc = 0;
 int lastFade = 0; // lastfade in ms. Voor delay
 int up,down;
 int wc;
-int wc_time;
+long wc_time;
 int upFade;
 
 
@@ -84,25 +84,36 @@ void loop(){
 
 checkPir();
 
-  /* WC CODE */
-if(wc == 1){
-  if(bright_wc < 210){
-      bright_wc = bright_wc + 3;
+/* WC CODE */
+
+// pir check
+if(digitalRead(WCPIR_PIN) == HIGH){ 
+  if(wc == 0){
+    Serial.println("WC Getriggered, wc was 0");
+     wc = 1;
+     for(bright_wc = 0; bright_wc < 210; bright_wc = bright_wc + 3){
       for (int x=0;x<WC_LEDS;x++){               // voor elke 10 leds op een tree
             wcleds[x] = CHSV(255,0,bright_wc); // zet HSV
           }
         FastLED.show();
-  }else{
+     }
+      wc_time = millis();
+     Serial.println("Fade klaar");
+   wc = 2;
+  }else if(wc == 2){
+    Serial.println("Extra tijd getriggerd");
     wc_time = millis();
-    wc = 2;
   }
 }
 
-if(delayy(wc_time,90000) && wc == 2){
+if(delayy(wc_time,15000) && wc == 2){
+  Serial.println("Timer over, fade out");
     fill_solid(wcleds, WC_LEDS, CRGB::Black);
     FastLED.show();
     bright_wc = 0;
     wc = 0;
+}else{
+  Serial.println("Nog geen tijd of wc niet aan");
 }
 
   /* TRAP SECTION */
@@ -218,9 +229,7 @@ boolean checkPir(){
 //    down = 1;
 //  }
 
-  if(digitalRead(WCPIR_PIN) == HIGH && wc == 0){ 
-    wc = 1;
-  }
+
 //
 //  if(digitalRead(WCPIR_PIN) == LOW && wc == 2){
 //    wc = 3;
