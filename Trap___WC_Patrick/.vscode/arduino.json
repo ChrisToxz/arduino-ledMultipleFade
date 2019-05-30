@@ -1,0 +1,7 @@
+{
+    "programmer": "AVRISP mkII",
+    "board": "arduino:avr:mega",
+    "configuration": "cpu=atmega2560",
+    "sketch": "Trap___WC_Patrick.ino",
+    "port": "COM3"
+}
